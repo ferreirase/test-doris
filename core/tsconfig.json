@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@controllers/*": ["src/controllers/*"],
-      "@models/*": ["src/models/*"],
+      "@entities/*": ["src/entities/*"],
       "@repositories/*": ["src/repositories/*"],
       "@services/*": ["src/services/*"],
       "@dtos/*": ["src/dtos/*"],
