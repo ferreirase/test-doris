@@ -24,7 +24,9 @@
       "@services/*": ["src/services/*"],
       "@dtos/*": ["src/dtos/*"],
       "@shared/*": ["src/shared/*"],
-      "@db/*": ["src/database/*"]
+      "@db/*": ["src/database/*"],
+      "@modules/*": ["src/modules/*"],
+      "@providers/*": ["src/providers/*"]
     }
   }
 }
