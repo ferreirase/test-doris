@@ -15,7 +15,7 @@ export enum ProductCategory {
 
 @Entity()
 export default class Product {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment', { type: 'int' })
   id: number;
 
   @Column({ unique: true })
@@ -24,7 +24,7 @@ export default class Product {
   @Column()
   name: string;
 
-  @Column({ nullable: true, type: 'string' })
+  @Column({ nullable: true, type: 'text' })
   image_url: string | null = null;
 
   @Column()

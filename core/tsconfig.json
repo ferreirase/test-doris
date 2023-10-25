@@ -23,7 +23,8 @@
       "@repositories/*": ["src/repositories/*"],
       "@services/*": ["src/services/*"],
       "@dtos/*": ["src/dtos/*"],
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@db/*": ["src/database/*"]
     }
   }
 }
