@@ -13,6 +13,8 @@ export enum ProductCategory {
   BOTTOM = 'BOTTOM',
 }
 
+interface IProduct extends CreateProductDto {}
+
 @Entity()
 export default class Product {
   @PrimaryGeneratedColumn('increment', { type: 'int' })
@@ -39,13 +41,13 @@ export default class Product {
   @Column({ type: 'simple-enum' })
   category: ProductCategory;
 
-  @Column()
+  @Column({ type: 'text', default: () => 'DATETIME()' })
   created_at: string;
 
-  @Column()
+  @Column({ type: 'text', default: () => 'DATETIME()' })
   updated_at: string;
 
-  constructor(props: CreateProductDto) {
+  constructor(props: IProduct) {
     Object.assign(this, props);
   }
 

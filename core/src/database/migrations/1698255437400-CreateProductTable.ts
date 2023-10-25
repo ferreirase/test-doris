@@ -51,12 +51,10 @@ export class CreateProductTable1698255437400 implements MigrationInterface {
           {
             name: 'created_at',
             type: 'varchar',
-            default: 'now()',
           },
           {
             name: 'updated_at',
             type: 'varchar',
-            default: 'now()',
           },
         ],
       }),
