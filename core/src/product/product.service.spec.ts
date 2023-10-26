@@ -1,7 +1,7 @@
-import Product, { ProductCategory } from '@entities/product.entity';
 import { HttpException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import Product, { ProductCategory } from '@product/entities/product.entity';
 import { Repository } from 'typeorm';
 import ProductService from './product.service';
 
@@ -13,17 +13,15 @@ describe('ProductService', () => {
 
   const mockProducts: Array<Product> = [];
 
-  const mockNewProduct: Product = new Product(
-    Product.create({
-      identifier: '35838_10YA',
-      name: 'Camiseta em interlock',
-      image_url:
-        'https://www.prada.com/content/dam/pradabkg_products/3/358/35838/10YIF0009/35838_10YI_F0009_S_161_SLF.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg',
-      list_price: 6100,
-      selling_price: 5900.9,
-      category: ProductCategory['TOP'],
-    }),
-  );
+  const mockNewProduct: Product = Product.create({
+    identifier: '35838_10YA',
+    name: 'Camiseta em interlock',
+    image_url:
+      'https://www.prada.com/content/dam/pradabkg_products/3/358/35838/10YIF0009/35838_10YI_F0009_S_161_SLF.jpg/_jcr_content/renditions/cq5dam.web.hebebed.1000.1000.jpg',
+    list_price: 6100,
+    selling_price: 5900.9,
+    category: ProductCategory['TOP'],
+  });
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({

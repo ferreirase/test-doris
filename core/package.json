@@ -61,12 +61,9 @@
       "ts"
     ],
     "moduleNameMapper": {
-      "^@entities/(.*)$": "<rootDir>/entities/$1",
-      "^@modules/(.*)$": "<rootDir>/modules/$1",
-      "^@db/(.*)$": "<rootDir>/database/$1",
-      "^@services/(.*)$": "<rootDir>/services/$1",
-      "^@dtos/(.*)$": "<rootDir>/dtos/$1",
-      "^@providers/(.*)$": "<rootDir>/providers/$1"
+      "^@product/(.*)$": "<rootDir>/product/$1",
+      "^@shared/(.*)$": "<rootDir>/shared/$1",
+      "^@db/(.*)$": "<rootDir>/database/$1"
     },
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",

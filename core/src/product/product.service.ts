@@ -1,6 +1,6 @@
-import CreateProductDto from '@dtos/product/create.dto';
-import Product from '@entities/product.entity';
 import { HttpException, Inject, Injectable } from '@nestjs/common';
+import CreateProductDto from '@product/dtos/create.dto';
+import Product from '@product/entities/product.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

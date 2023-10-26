@@ -1,4 +1,4 @@
-import { ProductCategory } from '@entities/product.entity';
+import { ProductCategory } from '@product/entities/product.entity';
 
 export default interface CreateProductDto {
   identifier: string;

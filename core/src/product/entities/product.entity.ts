@@ -1,5 +1,5 @@
-import CreateProductDto from '@dtos/product/create.dto';
 import { HttpException } from '@nestjs/common';
+import CreateProductDto from '@product/dtos/create.dto';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum ProcessProductStatus {

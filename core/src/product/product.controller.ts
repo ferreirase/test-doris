@@ -1,7 +1,7 @@
-import CreateProductDto from '@dtos/product/create.dto';
-import Product from '@entities/product.entity';
 import { Body, Controller, Get, HttpException, Post } from '@nestjs/common';
-import ProductService from '@services/product/product.service';
+import CreateProductDto from '@product/dtos/create.dto';
+import Product from '@product/entities/product.entity';
+import ProductService from '@product/product.service';
 
 @Controller()
 export default class ProductController {

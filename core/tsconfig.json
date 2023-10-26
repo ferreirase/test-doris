@@ -18,15 +18,9 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@controllers/*": ["src/controllers/*"],
-      "@entities/*": ["src/entities/*"],
-      "@repositories/*": ["src/repositories/*"],
-      "@services/*": ["src/services/*"],
-      "@dtos/*": ["src/dtos/*"],
+      "@product/*": ["src/product/*"],
       "@shared/*": ["src/shared/*"],
-      "@db/*": ["src/database/*"],
-      "@modules/*": ["src/modules/*"],
-      "@providers/*": ["src/providers/*"]
+      "@db/*": ["src/database/*"]
     }
   }
 }

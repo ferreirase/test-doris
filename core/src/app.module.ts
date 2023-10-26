@@ -1,8 +1,8 @@
 import ormConfig from '@db/orm.config';
-import { ProductModule } from '@modules/product.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProductModule } from '@product/product.module';
 
 @Module({
   imports: [
