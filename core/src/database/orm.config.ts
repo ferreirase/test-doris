@@ -7,7 +7,7 @@ dotenvConfig({ path: '.env' });
 
 export const config = {
   type: 'sqlite',
-  database: join(__dirname, 'database.db'),
+  database: join(__dirname, `${process.env.DATABASE_FILE || 'database.db'}`),
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: [__dirname + '/migrations/*.{js,ts}'],
   autoLoadEntities: true,

@@ -21,7 +21,7 @@ export default class ProductService {
       throw new HttpException('Product identifier already exists', 400);
     }
 
-    return this.productRepository.save(Product.create(body));
+    return this.productRepository.save(Product.create({ ...body }));
   }
 
   async findAll(): Promise<Product[]> {

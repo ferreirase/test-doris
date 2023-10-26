@@ -24,6 +24,12 @@ export class CreateProductTable1698255437400 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'active',
+            type: 'boolean',
+            isNullable: false,
+            default: false,
+          },
+          {
             name: 'image_url',
             type: 'varchar',
             isNullable: true,

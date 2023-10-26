@@ -13,7 +13,9 @@ export enum ProductCategory {
   BOTTOM = 'BOTTOM',
 }
 
-interface IProduct extends CreateProductDto {}
+interface IProduct extends CreateProductDto {
+  active: boolean;
+}
 
 @Entity()
 export default class Product {
@@ -25,6 +27,9 @@ export default class Product {
 
   @Column()
   name: string;
+
+  @Column({ type: 'boolean' })
+  active: boolean = false;
 
   @Column({ nullable: true, type: 'text' })
   image_url: string | null = null;
@@ -52,7 +57,7 @@ export default class Product {
   }
 
   static create(props: CreateProductDto) {
-    return new Product(props);
+    return new Product({ ...props, image_url: null, active: false });
   }
 
   changeStatus(newStatus: ProcessProductStatus) {
