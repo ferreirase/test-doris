@@ -17,7 +17,7 @@ interface IProduct extends CreateProductDto {
   active: boolean;
 }
 
-@Entity()
+@Entity({ name: 'products' })
 export default class Product {
   @PrimaryGeneratedColumn('increment', { type: 'int' })
   id: number;
@@ -46,10 +46,10 @@ export default class Product {
   @Column({ type: 'simple-enum' })
   category: ProductCategory;
 
-  @Column({ type: 'text', default: () => 'DATETIME()' })
+  @Column({ type: 'text', default: () => 'current_timestamp' })
   created_at: string;
 
-  @Column({ type: 'text', default: () => 'DATETIME()' })
+  @Column({ type: 'text', default: () => 'current_timestamp' })
   updated_at: string;
 
   constructor(props: IProduct) {

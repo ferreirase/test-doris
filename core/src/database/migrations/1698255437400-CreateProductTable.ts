@@ -57,10 +57,12 @@ export class CreateProductTable1698255437400 implements MigrationInterface {
           {
             name: 'created_at',
             type: 'varchar',
+            default: 'current_timestamp',
           },
           {
             name: 'updated_at',
             type: 'varchar',
+            default: 'current_timestamp',
           },
         ],
       }),
