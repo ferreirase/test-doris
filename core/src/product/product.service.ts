@@ -9,11 +9,11 @@ import { Repository } from 'typeorm';
 export default class ProductService {
   constructor(
     @Inject('PROCESS_IMAGE_SERVICE')
-    private readonly processImageServiceQueue: ClientProxy,
+    private readonly processImageService: ClientProxy,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
   ) {
-    this.processImageServiceQueue.connect();
+    this.processImageService.connect();
   }
 
   async create(body: CreateProductDto): Promise<Product | HttpException> {
@@ -31,7 +31,7 @@ export default class ProductService {
       Product.create({ ...body }),
     );
 
-    this.processImageServiceQueue.send('product-created', {
+    this.processImageService.emit('product-created', {
       id: newProduct.id,
       image_url: body.image_url,
     });
