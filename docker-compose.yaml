@@ -1,6 +1,6 @@
 version: "3"
 services:
-  postgres:
+  database:
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -19,6 +19,33 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - backend
+  app-image-process:
+    build:
+      context: ./image_process
+      dockerfile: Dockerfile
+    env_file: 
+      - ./image_process/.env
+    ports:
+      - "3002:3002"
+    restart: unless-stopped
+    depends_on: 
+      - app-core
+    networks:
+      - backend
+  app-core:
+    build:
+      context: ./core
+      dockerfile: Dockerfile
+    env_file:
+      - ./core/.env
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on: 
+      - database
+      - rabbitmq
     networks:
       - backend
 networks:
