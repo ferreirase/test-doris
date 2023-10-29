@@ -13,7 +13,7 @@ const rabbitmqHost = '127.0.0.1';
     TypeOrmModule.forFeature([Product]),
     ClientsModule.register([
       {
-        name: 'PROCESS_IMAGE_SERVICE',
+        name: 'PRODUCT_SERVICE_PROXY',
         transport: Transport.RMQ,
         options: {
           urls: [`amqp://${rabbitmqHost}:${rabbitmqPort}`],

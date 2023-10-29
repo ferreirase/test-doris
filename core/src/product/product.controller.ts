@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpException, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Inject,
+  Post,
+} from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import CreateProductDto from '@product/dtos/create.dto';
 import Product from '@product/entities/product.entity';
 import ProductService from '@product/product.service';
@@ -9,7 +17,13 @@ interface IBodyCreateProduct {
 
 @Controller()
 export default class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    @Inject('PRODUCT_SERVICE_PROXY')
+    private readonly productServiceProxy: ClientProxy,
+    private readonly productService: ProductService,
+  ) {
+    this.productServiceProxy.connect();
+  }
 
   @Get('/products')
   async findAll(): Promise<{ products: Product[] | [] }> {
@@ -27,6 +41,12 @@ export default class ProductController {
         productsCreated.push(await this.productService.create(productDto)),
       ),
     );
+
+    this.productServiceProxy.emit('product_created', {
+      products: productsCreated.map((product: Product) => {
+        return { id: product.id, image_url: product.image_url };
+      }),
+    });
 
     return { products: productsCreated };
   }

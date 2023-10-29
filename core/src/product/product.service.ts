@@ -1,5 +1,4 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import CreateProductDto from '@product/dtos/create.dto';
 import Product from '@product/entities/product.entity';
@@ -8,13 +7,9 @@ import { Repository } from 'typeorm';
 @Injectable()
 export default class ProductService {
   constructor(
-    @Inject('PROCESS_IMAGE_SERVICE')
-    private readonly processImageService: ClientProxy,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) {
-    this.processImageService.connect();
-  }
+  ) {}
 
   async create(body: CreateProductDto): Promise<Product | HttpException> {
     if (
@@ -31,10 +26,7 @@ export default class ProductService {
       Product.create({ ...body }),
     );
 
-    this.processImageService.emit('product-created', {
-      id: newProduct.id,
-      image_url: body.image_url,
-    });
+    newProduct.image_url = body.image_url;
 
     return newProduct;
   }
