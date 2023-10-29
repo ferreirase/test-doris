@@ -34,4 +34,16 @@ export default class ProductService {
   async findAll(): Promise<Product[]> {
     return this.productRepository.find();
   }
+
+  async findById(productId: number): Promise<Product> {
+    return this.productRepository.findOne({
+      where: {
+        id: productId,
+      },
+    });
+  }
+
+  async saveProduct(product: Product) {
+    return this.productRepository.save(product);
+  }
 }

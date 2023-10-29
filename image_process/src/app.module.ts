@@ -10,7 +10,7 @@ const rabbitmqHost = '127.0.0.1';
   imports: [
     ClientsModule.register([
       {
-        name: 'PRODUCT_SERVICE_PROXY',
+        name: 'IMAGE_PROCESS_PROXY',
         transport: Transport.RMQ,
         options: {
           urls: [`amqp://${rabbitmqHost}:${rabbitmqPort}`],

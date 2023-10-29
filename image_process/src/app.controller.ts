@@ -1,5 +1,5 @@
-import { Controller } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { Controller, Inject } from '@nestjs/common';
+import { ClientProxy, EventPattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
 export interface IProductCreated {
@@ -8,12 +8,24 @@ export interface IProductCreated {
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    @Inject('IMAGE_PROCESS_PROXY')
+    private readonly imageProcessProxy: ClientProxy,
+    private readonly appService: AppService,
+  ) {
+    this.imageProcessProxy.connect();
+  }
 
   @EventPattern('product_created')
   async getMessages(@Payload() { products }: IProductCreated) {
-    console.log(
-      await this.appService.processImage(products[0].id, products[0].image_url),
+    return this.imageProcessProxy.emit(
+      'image_processed',
+      await Promise.all(
+        products.map(
+          async (product) =>
+            await this.appService.processImage(product.id, product.image_url),
+        ),
+      ),
     );
   }
 }

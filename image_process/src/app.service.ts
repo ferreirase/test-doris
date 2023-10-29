@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import axios from 'axios';
 import * as fs from 'fs';
@@ -23,51 +23,42 @@ export class AppService {
 
     const newFileLocation = join(__dirname, 'temp', `${v4()}-compressed.jpg`);
 
-    const { data } = await axios.get(image_url, {
-      responseType: 'arraybuffer',
-    });
-
     try {
-      await new Promise<void>((resolve, reject) => {
+      const { data } = await axios.get(image_url, {
+        responseType: 'arraybuffer',
+      });
+
+      await new Promise<void>((resolve) => {
         fs.writeFile(
           originalImageLocation,
           data,
           (err: NodeJS.ErrnoException) => {
             if (err) {
-              reject(
-                new HttpException(
-                  'Error when trying to download the image',
-                  400,
-                ),
+              console.log(
+                'erro ao criar imagem com retorno do AXIOS: ',
+                err.message,
               );
-            } else {
-              console.log('Image downloaded successfully!');
-              resolve();
             }
+
+            resolve();
           },
         );
       });
 
-      await new Promise<void>((resolve, reject) => {
+      await new Promise<void>((resolve): void => {
         sharp(fs.readFileSync(originalImageLocation))
           .jpeg({ quality: 80 })
           .toFile(newFileLocation, (err: Error) => {
             if (err) {
-              console.error(err);
-              reject(
-                new HttpException(
-                  'Error when trying to compress the image',
-                  400,
-                ),
-              );
-            } else {
-              console.log('Image compressed successfully');
-              resolve();
+              console.log('erro no SHARP: ', err.message);
+              return { productId, error: true };
             }
+
+            resolve();
           });
       });
 
-      const uploadedImage = await s3
+      const { Location } = await s3
         .upload({
           Bucket: 'ferreirasedorisbucket',
           Key: `${v4()}.jpg`,
@@ -75,16 +66,14 @@ export class AppService {
         })
         .promise();
 
-      this.uploadedImageUrl = uploadedImage.Location;
+      this.uploadedImageUrl = Location;
 
       fs.unlinkSync(originalImageLocation);
       fs.unlinkSync(newFileLocation);
-
-      console.log('URL da imagem carregada:', this.uploadedImageUrl);
     } catch (error) {
-      console.error(error);
+      return { productId, error: true };
     }
 
-    return { id: productId, image_url: this.uploadedImageUrl };
+    return { productId, image_url: this.uploadedImageUrl, error: false };
   }
 }

@@ -6,9 +6,11 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, EventPattern, Payload } from '@nestjs/microservices';
 import CreateProductDto from '@product/dtos/create.dto';
-import Product from '@product/entities/product.entity';
+import Product, {
+  ProcessProductStatus,
+} from '@product/entities/product.entity';
 import ProductService from '@product/product.service';
 
 interface IBodyCreateProduct {
@@ -49,5 +51,26 @@ export default class ProductController {
     });
 
     return { products: productsCreated };
+  }
+
+  @EventPattern('image_processed')
+  async getProcessedImages(
+    @Payload()
+    images: Array<{ productId: number; image_url: string; error: boolean }>,
+  ) {
+    images.length &&
+      images.forEach(async (processedImage) => {
+        const productFound = await this.productService.findById(
+          processedImage.productId,
+        );
+
+        productFound && processedImage.error && processedImage.error === true
+          ? (productFound.changeStatus(ProcessProductStatus.PROCESSED_ERROR),
+            await this.productService.saveProduct(productFound))
+          : (productFound.changeStatus(ProcessProductStatus.PROCESSED),
+            productFound.activeProduct(),
+            (productFound.image_url = processedImage.image_url),
+            await this.productService.saveProduct(productFound));
+      });
   }
 }

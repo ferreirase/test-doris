@@ -74,4 +74,12 @@ export default class Product {
   changeImageURL(newImageURL: string) {
     this.image_url = newImageURL;
   }
+
+  activeProduct() {
+    this.active = true;
+  }
+
+  deactiveProduct() {
+    this.active = false;
+  }
 }
