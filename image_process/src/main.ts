@@ -7,6 +7,7 @@ async function bootstrap() {
   const rabbitmqHost = '127.0.0.1';
 
   const app = await NestFactory.create(AppModule);
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
