@@ -29,6 +29,7 @@
     "@nestjs/serve-static": "^4.0.0",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.3",
+    "aws-sdk": "^2.1483.0",
     "axios": "^1.6.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
