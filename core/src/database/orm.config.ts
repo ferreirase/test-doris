@@ -7,11 +7,11 @@ dotenvConfig({ path: '.env' });
 
 export const config: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: '0.0.0.0',
-  port: 5432,
-  username: 'admin',
-  password: 'admin',
-  database: 'test',
+  host: `${process.env.DATABASE_HOST}`,
+  port: Number(process.env.DATABASE_PORT),
+  username: `${process.env.DATABASE_USER}`,
+  password: `${process.env.DATABASE_PASSWORD}`,
+  database: `${process.env.DATABASE_DB_DEFAULT}`,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: [__dirname + '/migrations/*.{js,ts}'],
   autoLoadEntities: true,
