@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import axios from 'axios';
 import * as fs from 'fs';
@@ -6,17 +7,20 @@ import { join } from 'path';
 import * as sharp from 'sharp';
 import { v4 } from 'uuid';
 
-const s3 = new S3({
-  region: 'us-east-1',
-  credentials: {
-    accessKeyId: 'AKIAR5JYWJKXGNXDMXWA',
-    secretAccessKey: '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',
-  },
-});
-
 @Injectable()
 export class AppService {
+  constructor(
+    private readonly configService: ConfigService = new ConfigService(),
+  ) {}
   uploadedImageUrl: string;
+
+  s3 = new S3({
+    region: this.configService.get('AWS_S3_REGION'),
+    credentials: {
+      accessKeyId: this.configService.get('AWS_S3_ACCESS_KEY_ID'),
+      secretAccessKey: this.configService.get('AWS_S3_SECRET_ACCESS_KEY'),
+    },
+  });
 
   async processImage(productId: number, image_url: string) {
     const originalImageLocation = join(__dirname, 'temp', `${v4()}.jpg`);
@@ -58,9 +62,9 @@ export class AppService {
           });
       });
 
-      const { Location } = await s3
+      const { Location } = await this.s3
         .upload({
-          Bucket: 'ferreirasedorisbucket',
+          Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
           Key: `${v4()}.jpg`,
           Body: fs.readFileSync(newFileLocation),
         })
