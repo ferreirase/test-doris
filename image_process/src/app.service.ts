@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import axios from 'axios';
 import * as sharp from 'sharp';
+import { Readable } from 'stream';
 import { v4 } from 'uuid';
 
 @Injectable()
@@ -28,17 +29,26 @@ export class AppService {
         responseType: 'arraybuffer',
       });
 
+      const compressedImageBuffer = await sharp(data)
+        .jpeg({ quality: 80 })
+        .toBuffer();
+
+      const compressedImageStream = new Readable();
+      compressedImageStream._read = () => {};
+      compressedImageStream.push(compressedImageBuffer);
+      compressedImageStream.push(null);
+
       const { Location } = await this.s3
         .upload({
           Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
           Key: `${v4()}.jpg`,
-          Body: sharp(data).jpeg({ quality: 80 }).toBuffer(),
+          Body: compressedImageStream,
         })
         .promise();
 
       this.uploadedImageUrl = Location;
     } catch (error) {
-      this.logger.log(`AppService catch error: ${error.message}`);
+      this.logger.error(`AppService catch error: ${error.message}`);
       return { productId, error: true };
     }
 
